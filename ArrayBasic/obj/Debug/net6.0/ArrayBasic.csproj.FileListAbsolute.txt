@@ -1,0 +1,15 @@
+D:\Csharp\ArrayBasic\bin\Debug\net6.0\ArrayBasic.exe
+D:\Csharp\ArrayBasic\bin\Debug\net6.0\ArrayBasic.deps.json
+D:\Csharp\ArrayBasic\bin\Debug\net6.0\ArrayBasic.runtimeconfig.json
+D:\Csharp\ArrayBasic\bin\Debug\net6.0\ArrayBasic.dll
+D:\Csharp\ArrayBasic\bin\Debug\net6.0\ArrayBasic.pdb
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ArrayBasic.csproj.AssemblyReference.cache
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ArrayBasic.GeneratedMSBuildEditorConfig.editorconfig
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ArrayBasic.AssemblyInfoInputs.cache
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ArrayBasic.AssemblyInfo.cs
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ArrayBasic.csproj.CoreCompileInputs.cache
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ArrayBasic.dll
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\refint\ArrayBasic.dll
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ArrayBasic.pdb
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ArrayBasic.genruntimeconfig.cache
+D:\Csharp\ArrayBasic\obj\Debug\net6.0\ref\ArrayBasic.dll
