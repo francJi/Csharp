@@ -7,3 +7,8 @@
 *.cache
 *.pdb
 *.dll
+*.bin
+ArrayBasic/.vs/ArrayBasic/v17/.suo
+*.v2
+*.vsidx
+*.v2
