@@ -1,0 +1,15 @@
+D:\Csharp\MethodsBasic\bin\Debug\net6.0\MethodsBasic.exe
+D:\Csharp\MethodsBasic\bin\Debug\net6.0\MethodsBasic.deps.json
+D:\Csharp\MethodsBasic\bin\Debug\net6.0\MethodsBasic.runtimeconfig.json
+D:\Csharp\MethodsBasic\bin\Debug\net6.0\MethodsBasic.dll
+D:\Csharp\MethodsBasic\bin\Debug\net6.0\MethodsBasic.pdb
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\MethodsBasic.csproj.AssemblyReference.cache
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\MethodsBasic.GeneratedMSBuildEditorConfig.editorconfig
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\MethodsBasic.AssemblyInfoInputs.cache
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\MethodsBasic.AssemblyInfo.cs
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\MethodsBasic.csproj.CoreCompileInputs.cache
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\MethodsBasic.dll
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\refint\MethodsBasic.dll
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\MethodsBasic.pdb
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\MethodsBasic.genruntimeconfig.cache
+D:\Csharp\MethodsBasic\obj\Debug\net6.0\ref\MethodsBasic.dll
