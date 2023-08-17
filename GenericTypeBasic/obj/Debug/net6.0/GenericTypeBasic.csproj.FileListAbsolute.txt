@@ -1,0 +1,15 @@
+D:\Csharp\GenericTypeBasic\bin\Debug\net6.0\GenericTypeBasic.exe
+D:\Csharp\GenericTypeBasic\bin\Debug\net6.0\GenericTypeBasic.deps.json
+D:\Csharp\GenericTypeBasic\bin\Debug\net6.0\GenericTypeBasic.runtimeconfig.json
+D:\Csharp\GenericTypeBasic\bin\Debug\net6.0\GenericTypeBasic.dll
+D:\Csharp\GenericTypeBasic\bin\Debug\net6.0\GenericTypeBasic.pdb
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\GenericTypeBasic.csproj.AssemblyReference.cache
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\GenericTypeBasic.GeneratedMSBuildEditorConfig.editorconfig
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\GenericTypeBasic.AssemblyInfoInputs.cache
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\GenericTypeBasic.AssemblyInfo.cs
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\GenericTypeBasic.csproj.CoreCompileInputs.cache
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\GenericTypeBasic.dll
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\refint\GenericTypeBasic.dll
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\GenericTypeBasic.pdb
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\GenericTypeBasic.genruntimeconfig.cache
+D:\Csharp\GenericTypeBasic\obj\Debug\net6.0\ref\GenericTypeBasic.dll
