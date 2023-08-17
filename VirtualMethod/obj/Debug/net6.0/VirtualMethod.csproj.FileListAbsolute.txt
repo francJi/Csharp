@@ -1,0 +1,15 @@
+D:\Csharp\VirtualMethod\bin\Debug\net6.0\VirtualMethod.exe
+D:\Csharp\VirtualMethod\bin\Debug\net6.0\VirtualMethod.deps.json
+D:\Csharp\VirtualMethod\bin\Debug\net6.0\VirtualMethod.runtimeconfig.json
+D:\Csharp\VirtualMethod\bin\Debug\net6.0\VirtualMethod.dll
+D:\Csharp\VirtualMethod\bin\Debug\net6.0\VirtualMethod.pdb
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\VirtualMethod.csproj.AssemblyReference.cache
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\VirtualMethod.GeneratedMSBuildEditorConfig.editorconfig
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\VirtualMethod.AssemblyInfoInputs.cache
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\VirtualMethod.AssemblyInfo.cs
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\VirtualMethod.csproj.CoreCompileInputs.cache
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\VirtualMethod.dll
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\refint\VirtualMethod.dll
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\VirtualMethod.pdb
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\VirtualMethod.genruntimeconfig.cache
+D:\Csharp\VirtualMethod\obj\Debug\net6.0\ref\VirtualMethod.dll
