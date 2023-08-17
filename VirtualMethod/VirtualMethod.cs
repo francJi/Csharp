@@ -13,6 +13,17 @@
             {
                 unit.Move();
             }
+
+            // 추상 클래스
+            List<Shape> shapeList = new List<Shape>();
+            shapeList.Add(new Circle());
+            shapeList.Add(new Square());
+            shapeList.Add(new Triangle());
+
+            foreach (Shape shape in shapeList)
+            {
+                shape.Draw();
+            }
         }
     }
     public class Unit
@@ -38,6 +49,35 @@
         public override void Move()
         {
             Console.WriteLine("네발로 걷기");
+        }
+    }
+
+    abstract class Shape
+    {
+        public abstract void Draw();
+    }
+
+    class Circle : Shape
+    {
+        public override void Draw()
+        {
+            Console.WriteLine("Drawing a circle");
+        }
+    }
+
+    class Square : Shape
+    {
+        public override void Draw()
+        {
+            Console.WriteLine("Drawing a square");
+        }
+    }
+
+    class Triangle : Shape
+    {
+        public override void Draw()
+        {
+            Console.WriteLine("Drawing a triangle");
         }
     }
 }
