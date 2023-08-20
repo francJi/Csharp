@@ -1,0 +1,15 @@
+D:\Csharp\memoPad\obj\Debug\net6.0\memoPad.csproj.AssemblyReference.cache
+D:\Csharp\memoPad\obj\Debug\net6.0\memoPad.GeneratedMSBuildEditorConfig.editorconfig
+D:\Csharp\memoPad\obj\Debug\net6.0\memoPad.AssemblyInfoInputs.cache
+D:\Csharp\memoPad\obj\Debug\net6.0\memoPad.AssemblyInfo.cs
+D:\Csharp\memoPad\obj\Debug\net6.0\memoPad.csproj.CoreCompileInputs.cache
+D:\Csharp\memoPad\bin\Debug\net6.0\memoPad.exe
+D:\Csharp\memoPad\bin\Debug\net6.0\memoPad.deps.json
+D:\Csharp\memoPad\bin\Debug\net6.0\memoPad.runtimeconfig.json
+D:\Csharp\memoPad\bin\Debug\net6.0\memoPad.dll
+D:\Csharp\memoPad\bin\Debug\net6.0\memoPad.pdb
+D:\Csharp\memoPad\obj\Debug\net6.0\memoPad.dll
+D:\Csharp\memoPad\obj\Debug\net6.0\refint\memoPad.dll
+D:\Csharp\memoPad\obj\Debug\net6.0\memoPad.pdb
+D:\Csharp\memoPad\obj\Debug\net6.0\memoPad.genruntimeconfig.cache
+D:\Csharp\memoPad\obj\Debug\net6.0\ref\memoPad.dll
