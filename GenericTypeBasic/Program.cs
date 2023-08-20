@@ -2,8 +2,34 @@
 {
     internal class Program
     {
+        delegate void Delegate();
+        static void Method1()
+        {
+            Console.WriteLine("메서드 1 호출");
+        }
+
+        static void Method2()
+        {
+            Console.WriteLine("메서드 2 호출");
+        }
         static void Main(string[] args)
         {
+            Delegate delegatePratice = Method1;
+            delegatePratice += Method2;
+
+            // 등록된 모든 메서드 호출
+            delegatePratice();
+
+            Console.WriteLine("끝");
+
+            EventExample eventPractice = new EventExample();
+            EventOccur eventOccur = new EventOccur();
+
+            eventPractice.EventHandler += eventOccur.Greeting;
+            eventPractice.EventHandler += eventOccur.GoodBye;
+            eventPractice.Func("HaHAHa");
+            eventPractice.Func("afajfpasdj");
+
             //Calculator calc = new Calculator();
             //int sumInt = calc.Add(1, 2);
             //float sumFloat = calc.Add(1f, 2f);
@@ -15,12 +41,35 @@
             //Console.WriteLine($"double 타입 Add : {sumDouble}      Type : {sumDouble.GetType().Name}");
             //Console.WriteLine($"string 타입 Add : {sumString}      Type : {sumString.GetType().Name}");
 
-            Iinterview<string, string> interview = new Animal<string, string>("복순이", "12살");
-            interview.CallName();
-            Iinterview<string, int> interviewSecond = new Animal<string, int>("복순이", 12);
-            interview.IntroduceAnimal("복순이", 12);
+            //Iinterview<string, string> interview = new Animal<string, string>("복순이", "12살");
+            //interview.CallName();
+            //Iinterview<string, int> interviewSecond = new Animal<string, int>("복순이", 12);
+            //interview.IntroduceAnimal("복순이", 12);
         }
 
+        delegate void DelegateType(string message);
+
+        class EventExample
+        {
+            public event DelegateType EventHandler;
+            public void Func(string Message)
+            {
+                EventHandler(Message);
+            }
+        }
+
+        class EventOccur
+        {
+            public void Greeting(string message)
+            {
+                Console.WriteLine($"hi {message}");
+            }
+
+            public void GoodBye(string message)
+            {
+                Console.WriteLine($"bye {message}");
+            }
+        }
         interface Iinterview<T1, T2>
         {
             void CallName();
