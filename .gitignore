@@ -26,3 +26,9 @@ BlackJack/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
 *.editorconfig
 BlackJack/obj/Debug/net6.0/BlackJack.GlobalUsings.g.cs
 *.json
+DungeonSparta/.vs/DungeonSparta/v17/.suo
+*.csproj
+*.sln
+DungeonSparta/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+DungeonSparta/obj/Debug/net6.0/DungeonSparta.AssemblyInfo.cs
+DungeonSparta/obj/Debug/net6.0/DungeonSparta.GlobalUsings.g.cs
