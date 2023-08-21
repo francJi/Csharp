@@ -1,4 +1,7 @@
-﻿namespace SnakeGame
+﻿using System.IO;
+using System.Security.Cryptography.X509Certificates;
+
+namespace SnakeGame
 {
     internal class Program
     {
@@ -22,40 +25,73 @@
 
             // snake 객체
             Snake snake = new Snake(2,3);
-            snake.snakeLength = 5;
+            snake.snakeLength = 1;
 
-            // calField에 뱀 반영 (1)
-            calField[2, 3] = snake.snakeLength;
+            // 음식 객체
+            FoodCreator food = new FoodCreator();
 
-            // siteCalc 객체
-            SiteCalculator siteCal = new SiteCalculator(2,3,calField);
+            // 방향 
+            Direction direction = Direction.Right; // Default Direction
+            ConsoleKeyInfo directKey;
 
-            snake.OnMove += siteCal.HandleLength;
+            Direction GetDirectKey(Direction direction)
+            {
+                directKey = Console.ReadKey();
+                switch (directKey.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        direction = Direction.Left;
+                        return direction;
 
+                    case ConsoleKey.RightArrow:
+                        direction = Direction.Right;
+                        return direction;
 
-            //이벤트 발생
-            snake.MoveEvent();
-            Console.WriteLine(snake.snakeLength);
+                    case ConsoleKey.UpArrow:
+                        direction = Direction.Up;
+                        return direction;
+
+                    case ConsoleKey.DownArrow:
+                        direction = Direction.Down;
+                        return direction;
+
+                    default:
+                        return direction;
+                }
+
+            }
+
+            snake.onDirect += GetDirectKey;
 
 
             // 뱀의 움직임 재현.
+            int foodControl = 0;
             while (true)
             {
-                if (snake._snakeHeadSiteX < 20)
+                if (snake.snakeLength < 0)
                 {
-                    example = new ExampleField(20, 20, calField);
-                    calField[snake._snakeHeadSiteX, snake._snakeHeadSiteY] = snake.snakeLength;
-                    snake.SnakeMove(ref calField);
-                    snake.BodyController(ref calField);
-                    example.PrintArray();
-                    Thread.Sleep(500);
                     Console.Clear();
-                }
-                else
-                {
+                    example.GameOver(ref calField);
+                    example.PrintArray(snake);
                     break;
                 }
 
+                example = new ExampleField(20, 20, calField);
+                calField[snake._snakeHeadSiteX, snake._snakeHeadSiteY] = snake.snakeLength;
+                if (Console.KeyAvailable)
+                {
+                    snake.direction = snake.Direct(direction);
+                }
+                Console.Clear();
+                snake.SnakeMove(ref calField);
+                snake.BodyController(ref calField);
+                if (foodControl % 3 == 1)
+                {
+                    food.MakeFood(ref calField);
+                }
+                foodControl++;
+                example.PrintArray(snake);
+                Thread.Sleep(400);
             }
 
         }
@@ -113,15 +149,66 @@
             CalField = calField;
         }
 
-        public void PrintArray()
+        public void PrintArray(Snake snake)
         {
+            int overCount = 0;
+            string gameOverText = "GAME OVER";
             for (int row = 0; row < RowSize; row++)
             {
                 for (int column = 0; column < ColumnSize; column++)
                 {
-                    Console.Write(calField[row, column] + " ");
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    switch (calField[row, column])
+                    {
+                        case 1:
+                            if (row == snake._snakeHeadSiteX && column == snake._snakeHeadSiteY)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.Write('▶');
+                                    break;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                Console.Write('●');
+                                break;
+                            }
+                        case -3000:
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.Write('■');
+                            break;
+                        case -2000:
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write('■');
+                            break;
+                        case 0:
+                            Console.Write("  ");
+                            break;
+                        case -5999:
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write(gameOverText[overCount] + " ");
+                            overCount += 1;
+                            break;
+                        default:
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write('▶');
+                            break;
+                    }
+                    Console.ResetColor();
                 }
                 Console.WriteLine();
+            }
+        }
+
+        public void GameOver(ref int[,] calField)
+        {
+            int startSiteX = calField.GetLength(0) / 2;
+            int startSiteY = (calField.GetLength(1) / 2) - 4;
+
+            for (int i = 0; i < 9; i++)
+            {
+                int realSiteY = startSiteY + i - 4;
+                calField[startSiteX, startSiteY + realSiteY] = -5999;
             }
         }
     }
@@ -131,7 +218,7 @@
     
 
     // 이벤트 델리게이트 설정
-    public delegate int SnakeCollideHandler(int snakeHeadSiteX, int snakeHeadSiteY, int snakeLength);
+    delegate Direction SnakeDirectionHandler(Direction direction);
 
     // Snake 클래스를 만듭니다 : 뱀의 상태와 이동, 음식 먹기, 자신의 몸에 부딪혔는지 확인 등의 기능을 담당합니다.
     class Snake
@@ -161,41 +248,65 @@
         // 뱀의 길이 선언.
         public int snakeLength { get; set; }
 
-        // 뱀의 속도 결정.
-        public int speed = 500;
-        public int threadSpeed = 500;
+        // 뱀의 방향 결정
+        public event SnakeDirectionHandler onDirect;
 
+        public Direction Direct(Direction direction)
+        {
+            direction = onDirect.Invoke(direction);
+            return direction;
+        }
+
+        public Direction direction;
 
         // 뱀의 몸통 재현.
+
         Queue<int[]> bodySites = new Queue<int[]>();
         public void BodyController(ref int[,] calField)
         {
+            snakeLength = calField[snakeHeadSiteX, snakeHeadSiteY];
             int bodyLength = snakeLength - 1;
             int[] newSite = new int[2] { _snakeHeadSiteX, _snakeHeadSiteY };
             bodySites.Enqueue(newSite);
-            while (bodySites.Count > snakeLength)
+            while (bodySites.Count > snakeLength && snakeLength > 0)
             {
                 int[] deleteSite = bodySites.Dequeue();                 // 큐에서 요소 값을 지우면서 따로 선언.
                 calField[deleteSite[0], deleteSite[1]] = 0;             // 더 이상, 몸통에 해당되지 않는 값 초기 calField 값으로.
             }
 
-            Console.WriteLine($"몸길이 : {bodyLength}");
             int count = 0;
-            foreach (int[] bodyData in bodySites)
+            if (bodySites.Count < snakeLength)
             {
-                if (count != bodyLength)
+                if (count != bodySites.Count)
                 {
-                    Console.WriteLine($"몸통 좌표 : {bodyData[0]}, {bodyData[1]}");
-                    calField[bodyData[0], bodyData[1]] = -3000;
-                    count++;
-                }
-                else
-                {
-                    Console.WriteLine($"머리 좌표 : {bodyData[0]}, {bodyData[1]}");
+                    foreach (int[] bodyData in bodySites)
+                    {
+                        if (count != bodySites.Count - 1)
+                        {
+                            calField[bodyData[0], bodyData[1]] = -2000;
+                            count++;
+                        }
+                    }
                 }
             }
+            else
+            {
+                foreach (int[] bodyData in bodySites)
+                {
+                    if (count != bodyLength)
+                    {
+                        calField[bodyData[0], bodyData[1]] = -2000;
+                        count++;
+                    }
+                }
+            }
+           
         }
-       
+
+        // 뱀의 속도 결정.
+        public int speed = 400;
+        public int threadSpeed = 400;
+
 
         // 뱀의 움직임 재현.
         public void SnakeMove(ref int[,] calField)
@@ -205,75 +316,72 @@
                 int[] startSite = {_snakeHeadSiteX, _snakeHeadSiteY };
                 bodySites.Enqueue(startSite);
             }
-            int beforeHeadValue = calField[_snakeHeadSiteX, _snakeHeadSiteY];
-            int aftSnakeHeadSiteX = snakeHeadSiteX + (speed / threadSpeed);
-            if (aftSnakeHeadSiteX < calField.GetLength(0))
+
+            // 속도 계산
+            int snakeSpeed = speed / threadSpeed;
+
+
+            // 다음 좌표 변수 선언
+            int aftSnakeHeadSiteX = snakeHeadSiteX;
+            int aftSnakeHeadSiteY = snakeHeadSiteY;
+
+
+            
+
+            // 방향별 변화 설정.
+            switch (direction)
             {
-                int aheadValue = calField[aftSnakeHeadSiteX, _snakeHeadSiteY];
-                int resultValue = beforeHeadValue + aheadValue;
-                snakeHeadSiteX = aftSnakeHeadSiteX;
-                calField[snakeHeadSiteX, snakeHeadSiteY] = resultValue;
-            }                
-            else
-            {
-                Console.WriteLine("벽꽝");
+                case Direction.Up:
+                    aftSnakeHeadSiteX -= snakeSpeed;
+                    break;
+                case Direction.Down:
+                    aftSnakeHeadSiteX += snakeSpeed;
+                    break;
+                case Direction.Left:
+                    aftSnakeHeadSiteY -= snakeSpeed;
+                    break;
+                case Direction.Right:
+                    aftSnakeHeadSiteY += snakeSpeed;
+                    break;
             }
-        }
 
+            // 기존 값 불러오기
+            int beforeHeadValue = calField[snakeHeadSiteX, snakeHeadSiteY];
 
-        // 음식과 부딪혔을 때의 이벤트 설정
-        public event SnakeCollideHandler OnMove;
-
-        public int MoveEvent()
-        {
-            snakeLength = OnMove.Invoke(snakeHeadSiteX, snakeHeadSiteY, snakeLength);
-            return snakeLength;
-        }
-
-    }
-
-    // 좌표 계산 해주는 클래스 설정
-    class SiteCalculator
-    {
-        // 계산할 좌표 선언
-        private int calcSiteX;
-        private int calcSiteY;
-        public int _calcSiteX
-        {
-            get { return calcSiteX; }
-            set { calcSiteX = value; }
-        }
-        public int _calcSiteY
-        {
-            get { return calcSiteY; }
-            set { calcSiteY = value; }
-        }
-        
-        // 계산 배열 선언 및 초기화.
-        public int[,] calField { get; set; }
-
-        //생성자
-        public SiteCalculator(int siteX, int siteY, int[,] array2D) 
-        {
-            calcSiteX = siteX;
-            calcSiteY = siteY;
-            calField = array2D;
-        }
-
-        // 뱀의 길이 설정 (뱀의 머리 좌표값 계산 후 Length 반영)
-        public int HandleLength(int snakeHeadSiteX, int snakeHeadSiteY, int snakeLength)
-        {
-            snakeHeadSiteX = calcSiteX;
-            snakeHeadSiteY = calcSiteY;
-            snakeLength = calField[snakeHeadSiteX, snakeHeadSiteY];
-            return snakeLength;
+            // 다음에 움직였을 때의 값 계산 및 대입하기
+            int aheadValue = calField[aftSnakeHeadSiteX, aftSnakeHeadSiteY];
+            int resultValue = beforeHeadValue + aheadValue;
+            snakeHeadSiteX = aftSnakeHeadSiteX;
+            snakeHeadSiteY = aftSnakeHeadSiteY;
+            calField[snakeHeadSiteX, snakeHeadSiteY] = resultValue;
         }
     }
 
     // FoodCreator 클래스를 만듭니다 : 이 클래스는 맵의 크기 내에서 무작위 위치에 음식을 생성하는 역할을 합니다.
     class FoodCreator
     {
+        Random random = new Random();
+        int FoodSpeed;
 
+        public void MakeFood(ref int[,] calField)
+        {
+            int createCount = 0;
+            while (createCount < 1)
+            {
+                int foodSiteX = random.Next(1, calField.GetLength(0) - 1);
+                int foodSiteY = random.Next(1, calField.GetLength(1) - 1);
+
+                if (calField[foodSiteX, foodSiteY] == 0)
+                {
+                    calField[foodSiteX, foodSiteY] = 1;
+                    createCount++;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
     }
 
     enum Direction
