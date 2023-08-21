@@ -14,3 +14,15 @@ ArrayBasic/.vs/ArrayBasic/v17/.suo
 *.v2
 OOP/.vs/OOP/v17/.suo
 SnakeGame/.vs/SnakeGame/v17/.suo
+*.lock
+BlackJack/.vs/BlackJack/v17/.suo
+BlackJack/BlackJack.csproj
+BlackJack/BlackJack.sln
+BlackJack/obj/BlackJack.csproj.nuget.dgspec.json
+*.props
+*.targets
+BlackJack/obj/Debug/net6.0/BlackJack.AssemblyInfo.cs
+BlackJack/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+*.editorconfig
+BlackJack/obj/Debug/net6.0/BlackJack.GlobalUsings.g.cs
+*.json
