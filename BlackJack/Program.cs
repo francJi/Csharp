@@ -148,8 +148,6 @@
         }
     }
 
-    // 여기부터는 학습자가 작성
-    // 딜러 클래스를 작성하고, 딜러의 행동 로직을 구현하세요.
     public class Dealer : Player
     {
         public void DealerDraw(Deck deck)
@@ -158,15 +156,12 @@
             {
                 Card newCard = DrawCardFromDeck(deck);
                 Console.WriteLine($"딜러가 뽑은 카드 : {newCard.Suit} / {newCard.Rank}");
-                //Console.WriteLine($"딜러의 점수 총합 : {Hand.GetTotalValue}");
             }
         }
     }
 
-    // 블랙잭 게임을 구현하세요. 
     public class Blackjack
     {
-        // 코드를 여기에 작성하세요
         private Player Player { get; set; }
         private Dealer Dealer { get; set; }
         private Deck Deck { get; set; }
@@ -334,8 +329,6 @@
                 string input = Console.ReadLine();
                 return input;
             }
-
-            //dealer.DealerDraw(deck);
         }
     }
 }
