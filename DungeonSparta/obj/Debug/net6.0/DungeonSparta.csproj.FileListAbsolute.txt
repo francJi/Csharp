@@ -1,0 +1,15 @@
+D:\Csharp\DungeonSparta\bin\Debug\net6.0\DungeonSparta.exe
+D:\Csharp\DungeonSparta\bin\Debug\net6.0\DungeonSparta.deps.json
+D:\Csharp\DungeonSparta\bin\Debug\net6.0\DungeonSparta.runtimeconfig.json
+D:\Csharp\DungeonSparta\bin\Debug\net6.0\DungeonSparta.dll
+D:\Csharp\DungeonSparta\bin\Debug\net6.0\DungeonSparta.pdb
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\DungeonSparta.csproj.AssemblyReference.cache
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\DungeonSparta.GeneratedMSBuildEditorConfig.editorconfig
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\DungeonSparta.AssemblyInfoInputs.cache
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\DungeonSparta.AssemblyInfo.cs
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\DungeonSparta.csproj.CoreCompileInputs.cache
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\DungeonSparta.dll
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\refint\DungeonSparta.dll
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\DungeonSparta.pdb
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\DungeonSparta.genruntimeconfig.cache
+D:\Csharp\DungeonSparta\obj\Debug\net6.0\ref\DungeonSparta.dll
