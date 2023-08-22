@@ -23,64 +23,104 @@ namespace DungeonSparta
             //Inventory inventory = new Inventory();
             Item supplySword = new("보급형 단검", 1, null, "복지용으로 지급하는 단검입니다.", false);
             Item supplyArmor = new("보급형 갑옷", null, 4, "갑옷까지 무료로 지급합니다. 친절하게도..", true);
+
+            // 인벤토리 객체에 아이템 추가.
             inventory.AddItem(supplySword);
             inventory.AddItem(supplyArmor);
-            // 인벤토리 리스트에 아이템 추가.
+            //
             inventory.GetItemInfo();
-
         }
+
+        // 선택지 하이라이트 액션.
+        static Action<string, int, int> highLight = (message, menuNum, menuPoint) =>
+        {
+            var goodBye = $"{message}";
+            if (menuNum == menuPoint) { ColorPrint(message, ConsoleColor.Black, ConsoleColor.White); }
+            else { Console.Write($"{message}"); }
+        };
 
         static void DisplayGameIntro()
         {
-            Console.Clear();
+            int menuIndex = 0;
+            string[] menuChoices = new string[2] { "1. 상태 보기", "2. 인벤토리" };
 
-            Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
-            Console.WriteLine("이곳에서 전전으로 들어가기 전 활동을 할 수 있습니다.");
-            Console.WriteLine();
-            Console.WriteLine("1. 상태보기");
-            Console.WriteLine("2. 인벤토리");
-            Console.WriteLine();
-            Console.WriteLine("원하시는 행동을 입력해주세요.");
-
-            int input = CheckValidInput(1, 2);
-            switch (input)
+            while (true) 
             {
-                case 1:
-                    DisplayMyInfo();
-                    break;
+                Console.Clear();
 
-                case 2:
-                    DisplayInventory(inventory);
-                    break;
+                Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
+                Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
+                Console.WriteLine();
+
+
+                for (int choice = 0; choice < 2; choice ++) 
+                {
+                    highLight(menuChoices[choice], choice, menuIndex);
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        menuIndex -= 1;
+                        menuIndex = (menuIndex < 0) ? 0 : menuIndex;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menuIndex += 1;
+                        menuIndex = (menuIndex > menuChoices.Length - 1) ? menuChoices.Length - 1 : menuIndex;
+                        break;
+                    case ConsoleKey.Enter:
+                        switch (menuIndex)
+                        {
+                            case 0: 
+                                DisplayMyInfo(); break;
+                            case 1: 
+                                DisplayInventory(inventory); break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
         static void DisplayMyInfo()
         {
-            Console.Clear();
-
-            Console.WriteLine("상태보기");
-            Console.WriteLine("캐릭터의 정보르 표시합니다.");
-            Console.WriteLine();
-            Console.WriteLine($"Lv.{player.Level}");
-            Console.WriteLine($"{player.Name}({player.Job})");
-            Console.WriteLine($"공격력 :{player.Atk}");
-            Console.WriteLine($"방어력 : {player.Def}");
-            Console.WriteLine($"체력 : {player.Hp}");
-            Console.WriteLine($"Gold : {player.Gold} G");
-            Console.WriteLine();
-            Console.WriteLine("0. 나가기");
-
-            int input = CheckValidInput(0, 0);
-            switch (input)
+            while (true)
             {
-                case 0:
-                    DisplayGameIntro();
-                    break;
+                Console.Clear();
+
+                Console.WriteLine("상태보기");
+                Console.WriteLine("캐릭터의 정보르 표시합니다.");
+                Console.WriteLine();
+                Console.WriteLine($"Lv.{player.Level}");
+                Console.WriteLine($"{player.Name}({player.Job})");
+                Console.WriteLine($"공격력 :{player.Atk}");
+                Console.WriteLine($"방어력 : {player.Def}");
+                Console.WriteLine($"체력 : {player.Hp}");
+                Console.WriteLine($"Gold : {player.Gold} G");
+                Console.WriteLine();
+                ColorPrint("0. 나가기", ConsoleColor.Black, ConsoleColor.White);
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.Enter:
+                        DisplayGameIntro(); break;
+                    default:
+                        break;
+                }
             }
         }
 
-        static void EToYellow(string itemInfo)
+        // 장착 여부 색깔로
+        static void EToYellow(string itemInfo)                                 
         {
             bool isEquipped = itemInfo.Contains("[E]");
             string invenInfo = "- " + itemInfo;
@@ -117,32 +157,56 @@ namespace DungeonSparta
 
         static void DisplayInventory(Inventory inventory)
         {
-            Console.Clear();
+            int menuIndex = 0;
+            string[] menuChoices = new string[2] { "1. 장착 관리", "0. 나가기" };
 
-            Console.WriteLine("인벤토리");
-            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
-            Console.WriteLine();
-            Console.WriteLine("[아이템 목록]\n");
-            // 인베토리 내 아이템 정보 정리한 것 출력.
-            List<string> itemsInfo = inventory.ShowItemInfo();
-            foreach (string itemInfo in itemsInfo)
+            while (true)
             {
-                EToYellow(itemInfo);
-            }
-            Console.WriteLine("\n\n원하시는 행동을 입력해주세요.");
-            Console.WriteLine("\n\n1. 장착 관리");
-            Console.WriteLine("0. 나가기");
+                Console.Clear();
 
-            int input = CheckValidInput(0, 1);
-            switch (input)
-            {
-                case 0:
-                    DisplayGameIntro();
-                    break;
-                case 1:
-                    DisplayEquipManagement(inventory);
-                    break;
+                Console.WriteLine("인벤토리");
+                Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
+                Console.WriteLine();
+                Console.WriteLine("[아이템 목록]\n");
+                // 인베토리 내 아이템 정보 정리한 것 출력.
+                List<string> itemsInfo = inventory.ShowItemInfo();
+                foreach (string itemInfo in itemsInfo)
+                {
+                    EToYellow(itemInfo);
+                }
+                Console.WriteLine("\n\n원하시는 행동을 입력해주세요.\n\n");
 
+                for (int choice = 0; choice < 2; choice++)
+                {
+                    highLight(menuChoices[choice], choice, menuIndex);
+                    Console.WriteLine();
+                }
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        menuIndex -= 1;
+                        menuIndex = (menuIndex < 0) ? 0 : menuIndex;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menuIndex += 1;
+                        menuIndex = (menuIndex > menuChoices.Length - 1) ? menuChoices.Length - 1 : menuIndex;
+                        break;
+                    case ConsoleKey.Enter:
+                        switch (menuIndex)
+                        {
+                            case 0:
+                                DisplayEquipManagement(inventory); break;
+                            case 1:
+                                DisplayGameIntro(); break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
 
         }
@@ -154,7 +218,7 @@ namespace DungeonSparta
 
             while (true)
             {
-                List<string> getItemInfo = inventory.ResetItemInfo();
+                List<string> getItemInfo = inventory.ResetItemInfo().ToList();
                 List<string> menuOptions = new() { "1. 아이템 정렬", "0. 나가기" };
                 foreach (string menuOption in menuOptions)
                 {
@@ -232,6 +296,7 @@ namespace DungeonSparta
         static void DisplayEquipArrange(Inventory inventory)
         {
             int selectIndex = 0;
+            int menuIndex = 0;
             string equipped = "장착여부   | ";
             string arrangeName = "아이템 명   | ";
             string attackName = "공격력   | ";
@@ -264,17 +329,17 @@ namespace DungeonSparta
                 
                 Console.WriteLine("[아이템 목록]");
                 // 테이블 컬럼
-                
+                Action<string, int, int> highLight = (message, menuNum, menuPoint) =>
+                {
+                    var goodBye = $"{message}";
+                    if (menuNum == menuPoint) { ColorPrint(message, ConsoleColor.Black, ConsoleColor.White); }
+                    else { Console.Write($"{message}"); }
+                };
+
+
                 for (int headIndex = 0; headIndex < headLine.Count(); headIndex++)
                 {
-                    if (selectIndex == headIndex)
-                    {
-                        ColorPrint(headLine[headIndex], ConsoleColor.Black, ConsoleColor.White);
-                    }
-                    else
-                    {
-                        Console.Write(headLine[headIndex]);
-                    }
+                    highLight(headLine[headIndex], headIndex, selectIndex);
                 }
                 Console.WriteLine(explanation);
 
@@ -284,6 +349,14 @@ namespace DungeonSparta
                     EToYellow($"{itemIndex + 1}. {getItemInfo[itemIndex]}");
                 }
 
+                string outMessage = "\n - 나가기 -";
+                highLight(outMessage, menuIndex, 1);
+                
+                //Console.WriteLine("\n - 나가기 -");
+
+                // 나가기
+
+                // 키보드 입력
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
 
                 switch (keyInfo.Key)
@@ -296,8 +369,19 @@ namespace DungeonSparta
                         selectIndex += 1;
                         selectIndex = (selectIndex > headLine.Count - 1) ? headLine.Count - 1 : selectIndex;
                         break;
+                    case ConsoleKey.UpArrow:
+                        menuIndex = 0;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menuIndex = 1;
+                        break;
                     case ConsoleKey.Enter:
-                        // 누를 때마다 해당 선택한 컬럼 기준으로 내림차순, 오름차순, 원래대로
+                        // 누를 때마다 해당 선택한 컬럼 기준으로 내림차순, 오름차순, 원래대로.. 다른 컬럼을 선택시 기존 정렬 초기화
+                        if (menuIndex ==1)
+                        {
+                            DisplayEquipManagement(inventory);
+                            return;
+                        }
                         if (prevSelectIndex != selectIndex)
                         {
                             equipped = "장착여부   | ";
@@ -371,22 +455,19 @@ namespace DungeonSparta
                 Console.WriteLine("잘못된 입력입니다.");
             }
         }
+    }
 
-        public static List<Item> OrderByProperty<T>(List<Item> itemList, Func<Item, T> propertySelector, bool descending)
+    public class NullComparer<T> : IComparer<T>              // 공격력, 방어력 오름차순 구간에서 Null 값이 먼저 나오는 현상 배제
+    {
+        public int Compare(T x, T y)
         {
-            if (descending)
-            {
-                return itemList.OrderByDescending(propertySelector).ToList();
-            }
-            else
-            {
-                return itemList.OrderBy(propertySelector).ToList();
-            }
+            if (x == null && y == null) return 0;
+            if (x == null) return 1;
+            if (y == null) return -1;
+            return Comparer<T>.Default.Compare(x, y);
         }
     }
 
-
-    
 
     public class Character
     {
@@ -466,7 +547,7 @@ namespace DungeonSparta
             }
             else if (clickCount % 3 == 2)
             {
-                return inventoryList.OrderBy(itemField).ToList();
+                return inventoryList.OrderBy(item => itemField(item), new NullComparer<T>()).ToList();
             }
             else { return inventoryList; }   
         }
@@ -521,12 +602,18 @@ namespace DungeonSparta
                 for (int str = 0; str < nameVacantSize - nameLength; str++) { vacant += " "; }
                 string itemInfo = $"{itemName}{vacant}|";
 
+
+                vacant = "";
                 string itemSpec = "";
                 itemSpec += (item.Atk != null) ? $" 공력력 + {item.Atk} " : "";
                 itemSpec += (item.Def != null) ? $" 방어력 + {item.Def} " : "";
+                int specLength = itemSpec.Length;
+                int specVacantSize = 10;
+                for (int str = 0; str < specVacantSize - specLength; str++) { vacant += " "; }
+                itemSpec = itemSpec + vacant;
                 itemInfo += itemSpec;
 
-                itemInfo += $"| {item.ItemInfo}";
+                itemInfo += $"| {item.ItemInfo} ";
 
                 inventoryInfo.Add(itemInfo);                
             }
