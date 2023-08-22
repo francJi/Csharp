@@ -6,6 +6,7 @@ namespace DungeonSparta
     {
         public static Character player;
         public static Inventory inventory = new Inventory();
+        public static Inventory shop = new Inventory();
         
 
         static void Main(string[] args)
@@ -21,14 +22,27 @@ namespace DungeonSparta
 
             // 아이템 정보 세팅
             //Inventory inventory = new Inventory();
-            Item supplySword = new("보급형 단검", 1, null, "복지용으로 지급하는 단검입니다.", false);
-            Item supplyArmor = new("보급형 갑옷", null, 4, "갑옷까지 무료로 지급합니다. 친절하게도..", true);
+            Item supplySword = new("보급형 단검", 1, null, "복지용으로 지급하는 단검입니다.", false, 100);
+            Item supplyArmor = new("보급형 갑옷", null, 4, "갑옷까지 무료로 지급합니다. 친절하게도..", true, 100);
 
             // 인벤토리 객체에 아이템 추가.
             inventory.AddItem(supplySword);
             inventory.AddItem(supplyArmor);
             //
             inventory.GetItemInfo();
+
+            // 상점에 물품채우기
+            Item sharpSword = new("날카로운 단검", 3, null, "예리해 보이는 단검입니다. 보급형 단검과 비슷해보인다면 착각입니다.", false, 600);
+            Item chainArmor = new("체인 아머", null, 6,  "확실히 튼튼해 보입니다. 무겁게 보인다면 기분탓입니다.", false, 400);
+            Item sampleSword = new("전시용 장검", 4, null, "상점 한구석 벽에 전시되어 있는 장검입니다. 전시용 치고는 낡은 것 같습니다.", false, 500);
+            Item roundShield = new("라운드 실드", null, 5, "둥근 방패입니다. 생각보다 작습니다.", false, 500);
+            Item longSword = new("롱소드", 6, null, "흔한 롱소드입니다.", false, 1400);
+            shop.AddItem(sharpSword);
+            shop.AddItem(chainArmor);
+            shop.AddItem(sampleSword);
+            shop.AddItem(roundShield);
+            shop.AddItem(longSword);
+
         }
 
         // 선택지 하이라이트 액션.
@@ -249,6 +263,7 @@ namespace DungeonSparta
                     {
                         Console.ResetColor();
                         Console.WriteLine("\n\n원하시는 행동을 입력해주세요.\n\n");
+
                         if (itemIndex == selectIndex)
                         {
                             ColorPrint($"1. 아이템 정렬", ConsoleColor.Black, ConsoleColor.White);
@@ -438,6 +453,47 @@ namespace DungeonSparta
             }
         }
 
+        static void DisplayShop()
+        {
+            /*
+             상점
+            필요한 아이템을 얻을 수 있는 상점입니다.
+
+            [보유 골드]
+            800 G
+
+            [아이템 목록]
+            - 수련자 갑옷    | 방어력 +5  | 수련에 도움을 주는 갑옷입니다.             |  1000 G
+            - 무쇠갑옷      | 방어력 +9  | 무쇠로 만들어져 튼튼한 갑옷입니다.           |  구매완료
+            - 스파르타의 갑옷 | 방어력 +15 | 스파르타의 전사들이 사용했다는 전설의 갑옷입니다.|  3500 G
+            - 낡은 검      | 공격력 +2  | 쉽게 볼 수 있는 낡은 검 입니다.            |  600 G
+            - 청동 도끼     | 공격력 +5  |  어디선가 사용됐던거 같은 도끼입니다.        |  1500 G
+            - 스파르타의 창  | 공격력 +7  | 스파르타의 전사들이 사용했다는 전설의 창입니다. |  구매완료
+
+            1. 아이템 구매
+            0. 나가기
+
+            원하시는 행동을 입력해주세요.
+            >>
+             */
+            List<Item> shopList = shop.ShowInventory().ToList();
+
+            List<string> shopItemInfo = shop.GetItemInfo().ToList();
+            ColorPrint("상점", ConsoleColor.Yellow, null);
+            Console.WriteLine();
+            Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
+            Console.WriteLine();
+            ColorPrint("[보유 골드]", ConsoleColor.Yellow, null);
+            Console.WriteLine();
+            int leftGold = player.Gold;
+            string goldExpression = $"{leftGold} G";
+            Console.WriteLine(goldExpression);
+            Console.WriteLine();
+            Console.WriteLine("[아이템 목록]");
+            
+
+
+        }
 
         static int CheckValidInput(int min, int max)
         {
@@ -498,15 +554,18 @@ namespace DungeonSparta
         public int? Def { get; }
         public string ItemInfo { get; }
         public bool IsEquiped { get; set; }
+        public int Price { get; }
+
         public List<string> InventoryInfo;
 
-        public Item(string itemName, int? atk, int? def, string itemInfo, bool isEquiped)
+        public Item(string itemName, int? atk, int? def, string itemInfo, bool isEquiped, int price)
         {
             ItemName = itemName;
             Atk = atk;
             Def = def;
             ItemInfo = itemInfo;
             IsEquiped = isEquiped;
+            Price = price;
         }
     }
 
@@ -631,6 +690,29 @@ namespace DungeonSparta
         public List<string> ShowItemInfo()
         {
             return inventoryInfo;
+        }
+    }
+
+    public class Shop : Inventory
+    {
+        private List<Item> ShopList { get; }
+        private bool isSelled { get; }
+
+        public Shop()
+        {
+            ShopList = new List<Item>();
+        }
+        public void GetShopInfo()
+        {
+            foreach (Item item in ShopList)
+            {
+                string itemName = item.ItemName;
+                int nameLength = itemName.Length;
+                int nameVacantSize = 18;                                               // 글자 수 제한 : 18자.
+                string vacant = "";
+                for (int str = 0; str < nameVacantSize - nameLength; str++) { vacant += " "; }
+                string itemInfo = $"{itemName}{vacant}|";
+            }
         }
     }
 }
