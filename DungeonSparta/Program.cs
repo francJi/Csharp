@@ -1,7 +1,4 @@
-﻿using System.Net;
-using System.Reflection.Metadata;
-
-namespace DungeonSparta
+﻿namespace DungeonSparta
 {
     internal class Program
     {
