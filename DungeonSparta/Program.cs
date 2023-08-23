@@ -46,7 +46,7 @@ namespace DungeonSparta
 
         }
 
-        // 장착 여부 색깔로
+        // 편의성 1 : 장착 여부만 색깔로 출력하는 메서드
         static void EToYellow(string itemInfo)
         {
             bool isEquipped = itemInfo.Contains("[E]");
@@ -73,7 +73,7 @@ namespace DungeonSparta
             }
         }
 
-        // 지정 문구 염색 메서드
+        // 편의성 2 : 지정 문구 염색 메서드
         public static void ColorPrint(string word, ConsoleColor? wordColor = null, ConsoleColor? backgroundColor = null)
         {
             if (wordColor != null) { Console.ForegroundColor = wordColor.Value; }
@@ -82,7 +82,7 @@ namespace DungeonSparta
             Console.ResetColor();
         }
 
-        // 선택지 하이라이트 액션.
+        // 편의성 3 : 선택지 하이라이트 액션.
         static Action<string, int, int> highLight = (message, menuNum, menuPoint) =>
         {
             var goodBye = $"{message}";
@@ -144,6 +144,7 @@ namespace DungeonSparta
             }
         }
 
+        // 캐릭터 정보 화면
         static void DisplayMyInfo()
         {
             while (true)
@@ -173,7 +174,7 @@ namespace DungeonSparta
             }
         }
 
-
+        // 캐릭터 인벤토리 화면
         static void DisplayInventory(Inventory inventory)
         {
             int menuIndex = 0;
@@ -232,6 +233,7 @@ namespace DungeonSparta
 
         }
 
+        // 캐릭터 인벤토리 장착 관리 화면
         static void DisplayEquipManagement(Inventory inventory)     
         {
             int selectIndex = 0;
@@ -287,7 +289,7 @@ namespace DungeonSparta
         }
 
 
-
+        // 캐릭터 인벤토리 정렬 화면
         static void DisplayEquipArrange(Inventory inventory)
         {
             int selectIndex = 0;
@@ -423,6 +425,7 @@ namespace DungeonSparta
             }
         }
 
+        // 상점 초기 화면
         static void DisplayShop(Shop shop)
         {
             int shopIndex = 0;
@@ -491,6 +494,7 @@ namespace DungeonSparta
             }
         }
 
+        // 구매 선택시 화면
         static void DisplayBuying()
         {
             int shopIndex = 0;
@@ -580,6 +584,7 @@ namespace DungeonSparta
             }
         }
 
+        // 판매 선택시 화면
         static void DisplaySelling()
         {
             int shopIndex = 0;
@@ -694,7 +699,7 @@ namespace DungeonSparta
             TargetItem = item;
         }
 
-        // 구매 이벤트 구독자
+        // 구매 이벤트 발행
         public bool AttemptBuying(Item item)
         {
             if (Gold > item.Price)
@@ -706,7 +711,7 @@ namespace DungeonSparta
             else { Program.ColorPrint("!!!!!!! 골드가 부족합니다", ConsoleColor.Red, null); Thread.Sleep(500); return false; }
         }
 
-        // 판매 이벤트 구독자
+        // 판매 이벤트 발행
         public bool Selling(Item item)
         {
             Gold += (int)(item.Price * 0.85);
@@ -854,6 +859,7 @@ namespace DungeonSparta
             ResetEquip();
         }
 
+        // 장착 장비 현황 초기화 메서드.
         public List<Item> ResetEquip()
         {
             //equipmentList.Clear();
