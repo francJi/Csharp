@@ -187,7 +187,7 @@ namespace DungeonSparta
                 Console.WriteLine("[아이템 목록]\n");
                 // 인베토리 내 아이템 정보 정리한 것 출력.
                 List<string> itemsInfo = inventory.ResetItemInfo().ToList();
-                //
+                
                 foreach (string itemInfo in itemsInfo)
                 {
                     EToYellow(itemInfo);
@@ -451,6 +451,7 @@ namespace DungeonSparta
                 Console.WriteLine(goldExpression);
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
+                for (int itemIndex = 0; itemIndex < shopItemInfo.Count(); itemIndex++) { Console.WriteLine(shopItemInfo[itemIndex].ToString()); }
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
@@ -495,9 +496,6 @@ namespace DungeonSparta
         static void DisplayBuying()
         {
             int shopIndex = 0;
-
-            
-            
 
             while (true)
             {
@@ -564,12 +562,16 @@ namespace DungeonSparta
                                 break;
                             }
                             Calculator merchant = new Calculator(player, shopList[shopIndex], inventory);
-                            merchant.OnTransaction += player.HandleGold;
+                            merchant.OnTransaction += player.HandleBuyGold;
                             merchant.OnTransaction += inventory.HandlePutBuyed;
                             merchant.OnTransaction += shop.HandleStock;
                             merchant.AttemptBuying(shopList[shopIndex]);
                         }
-                        else if (shopIndex == shopItemInfo.Count() + menuChoice.Count() -1)
+                        else if (shopIndex == shopItemInfo.Count())
+                        {
+                            DisplaySelling(); return;
+                        }
+                        else if (shopIndex == shopItemInfo.Count() + 1)
                         {
                             DisplayShop(shop); return;
                         }
@@ -582,7 +584,85 @@ namespace DungeonSparta
 
         static void DisplaySelling()
         {
+            int shopIndex = 0;
 
+            while (true)
+            {
+                Console.Clear();
+
+                List<string> menuChoice = new List<string> { "아이템 구매", "나가기" };
+
+                List<string> invenItemInfo = inventory.ResetItemInfo();
+                List<Item> invenList = inventory.ShowInventory().ToList();
+
+                ColorPrint("상점 - 판매", ConsoleColor.Yellow, null);
+                Console.WriteLine();
+                Console.WriteLine("언제나 최고가로 매입하고 있는 친절한 상점이라고 합니다.");
+                Console.WriteLine();
+                ColorPrint("[보유 골드]", ConsoleColor.Yellow, null);
+                Console.WriteLine();
+                int leftGold = player.Gold;
+                string goldExpression = $"{leftGold} G";
+                Console.WriteLine(goldExpression);
+                Console.WriteLine();
+                Console.WriteLine("[아이템 목록]");
+                Console.WriteLine("판매하고 싶은 아이템을 선택해주세요.");
+                Console.WriteLine(">>");
+
+
+
+                for (int choice = 0; choice < invenItemInfo.Count(); choice++)
+                {
+                    highLight($"{(choice + 1).ToString()}. {invenItemInfo[choice]}", choice, shopIndex);
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("원하시는 행동을 선택해주세요.");
+                Console.WriteLine(">>");
+
+                for (int choice = invenItemInfo.Count() - 1; choice < invenItemInfo.Count() + menuChoice.Count() - 1; choice++)
+                {
+                    int additionalChoice = choice - invenItemInfo.Count() + 1;
+                    highLight(menuChoice[additionalChoice], additionalChoice, shopIndex - invenItemInfo.Count());
+                    Console.WriteLine();
+                }
+
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        shopIndex -= 1;
+                        shopIndex = (shopIndex < 0) ? 0 : shopIndex;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        shopIndex += 1;
+                        shopIndex = (shopIndex > invenItemInfo.Count() + menuChoice.Count() - 1) ? invenItemInfo.Count() + menuChoice.Count() - 1 : shopIndex;
+                        break;
+                    case ConsoleKey.Enter:
+                        if (shopIndex < invenItemInfo.Count())
+                        {
+                            Calculator merchant = new Calculator(player, invenList[shopIndex], inventory);
+                            merchant.OnTransaction += player.HandleSellGold;
+                            merchant.OnTransaction += inventory.HandleSelled;
+                            merchant.Selling(invenList[shopIndex]);
+                            
+                        }
+                        else if (shopIndex == invenList.Count())
+                        {
+                            DisplayBuying(); return;
+                        }
+                        else if (shopIndex == invenList.Count() + 1)
+                        {
+                            DisplayShop(shop); return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 
@@ -625,6 +705,14 @@ namespace DungeonSparta
             }
             else { Program.ColorPrint("!!!!!!! 골드가 부족합니다", ConsoleColor.Red, null); Thread.Sleep(500); return false; }
         }
+
+        public bool Selling(Item item)
+        {
+            Gold += (int)(item.Price * 0.85);
+            OnTransaction?.Invoke(item);
+            Program.ColorPrint($"{item.ItemName}을 {(int)(item.Price * 0.85)} G 에 판매하셨습니다.");
+            return true;
+        }
     }
 
     public class Character
@@ -639,9 +727,14 @@ namespace DungeonSparta
         public int Gold { get; set; }
 
 
-        public bool HandleGold(Item item)
+        public bool HandleBuyGold(Item item)
         {
             Gold -= item.Price;
+            return true;
+        }
+        public bool HandleSellGold(Item item)
+        {
+            Gold += (int)(item.Price * 0.85);
             return true;
         }
 
@@ -718,6 +811,12 @@ namespace DungeonSparta
             return true;
         }
 
+        public bool HandleSelled(Item item)
+        {
+            InventoryList.Remove(item);
+            return true;
+        }
+
         public List<Item> ChangeOrder<T>(List<Item> inventoryList, Func<Item, T> itemField, int clickCount)
         {
             if (clickCount % 3 == 1)
@@ -776,32 +875,30 @@ namespace DungeonSparta
 
         List<string> inventoryInfo = new List<string>();
 
+       
+        // 아이템 출력 유틸
+        public Func<string, string, int, bool, string> formatInfo = (element, vacant, elementVacantSize, isEnd) =>
+        {
+            vacant = "";
+            int elementLength = element.Length;
+            for (int str = 0; str < elementVacantSize - elementLength; str++) { vacant += " "; }
+            if (isEnd) { element = $"{element}{vacant}"; }
+            else { element = $"{element}{vacant}|"; }
+  
+            return element;
+        };
+
         // inventory List에 있는 Item들 정보 문자열로 추가
         public virtual List<string> GetItemInfo()
         {
             foreach (Item item in InventoryList)
             {
-                string itemName = item.ItemName;
-                itemName = (item.IsEquiped) ? "[E] " + itemName : itemName;
+                string itemInfo = formatInfo(item.ItemName, "", 18, false);
 
-                int nameLength = itemName.Length;
-                int nameVacantSize = 18;                                               // 글자 수 제한 : 18자.
-                string vacant = "";
-                for (int str = 0; str < nameVacantSize - nameLength; str++) { vacant += " "; }
-                string itemInfo = $"{itemName}{vacant}|";
+                itemInfo += (item.Atk != null) ? formatInfo($" 공력력 + {item.Atk} ", "", 12, false) : "";
+                itemInfo += (item.Def != null) ? formatInfo($" 방어력 + {item.Def} ", "", 12, false) : "";
 
-
-                vacant = "";
-                string itemSpec = "";
-                itemSpec += (item.Atk != null) ? $" 공력력 + {item.Atk} " : "";
-                itemSpec += (item.Def != null) ? $" 방어력 + {item.Def} " : "";
-                int specLength = itemSpec.Length;
-                int specVacantSize = 10;
-                for (int str = 0; str < specVacantSize - specLength; str++) { vacant += " "; }
-                itemSpec = itemSpec + vacant;
-                itemInfo += itemSpec;
-
-                itemInfo += $"| {item.ItemInfo} ";
+                itemInfo += formatInfo(item.ItemInfo, "", 55, true);
 
                 inventoryInfo.Add(itemInfo);                
             }
@@ -851,32 +948,15 @@ namespace DungeonSparta
             shopInfo = CleanInfo(shopInfo);
             foreach (Item item in ShopList)
             {
-                string itemName = item.ItemName;                                       // Func 화 시킬 예정.
-                int nameLength = itemName.Length;
-                int nameVacantSize = 18;                                               // 글자 수 제한 : 18자.
-                string vacant = "";
-                for (int str = 0; str < nameVacantSize - nameLength; str++) { vacant += " "; }
-                string itemInfo = $"{itemName}{vacant}|";
+                string itemInfo = formatInfo(item.ItemName, "", 18, false);
 
-                vacant = "";
-                string itemSpec = "";
-                itemSpec += (item.Atk != null) ? $" 공력력 + {item.Atk} " : "";
-                itemSpec += (item.Def != null) ? $" 방어력 + {item.Def} " : "";
-                int specLength = itemSpec.Length;
-                int specVacantSize = 10;
-                for (int str = 0; str < specVacantSize - specLength; str++) { vacant += " "; }
-                itemSpec = itemSpec + vacant;
-                itemInfo += itemSpec;
+                itemInfo += (item.Atk != null) ? formatInfo($" 공력력 + {item.Atk} ", "", 12, false) : "";
+                itemInfo += (item.Def != null) ? formatInfo($" 방어력 + {item.Def} ", "", 12, false) : "";
 
-                vacant = "";
-                int infoLength = item.ItemInfo.Length;
-                int infoVacantSize = 55;
-                for (int str = 0; str < infoVacantSize - infoLength; str++) { vacant += " "; }
-                itemInfo += $"| {item.ItemInfo}{vacant}";
+                itemInfo += formatInfo(item.ItemInfo, "", 55, false);
 
-
-                if (item.isSelled == false) { itemInfo += $" | {item.Price} G "; }
-                else { itemInfo += "| 구매완료"; }
+                if (item.isSelled == false) { itemInfo += $" {item.Price} G "; }
+                else { itemInfo += " 구매완료"; }
 
 
                 shopInfo.Add(itemInfo);
