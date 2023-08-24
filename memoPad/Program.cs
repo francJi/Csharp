@@ -1,12 +1,16 @@
 ﻿using System.ComponentModel;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
+using System;
+using System.ComponentModel.Design;
 
 namespace SnakeGame
 {
     internal class Program
     {
 
+
+        
         // 뱀은 매턴마다 자신의 앞으로 이동합니다.
         // 사용자는 방향키를 이용하여 뱀의 이동 방향을 제어할 수 있습니다.
         // 뱀은 맵에 무작위로 생성되는 음식을 먹을 수 있습니다.
@@ -16,6 +20,9 @@ namespace SnakeGame
         // Main 함수에서 게임을 제어하는 코드를 작성합니다 : 뱀의 이동, 음식 먹기, 게임 오버 조건 확인 등을 주기적으로 수행합니다.
         static void Main(string[] args)
         {
+            long a = 13;
+            Console.WriteLine(a % 10);
+            /*
             // 초기 배열
             string[,] gameScreen = new string[40, 30];
             // screen 인스턴스화                    필드 : gameScreen
@@ -77,7 +84,7 @@ namespace SnakeGame
             //
             //Point p = new Point(startSite[0], startSite[1], '*');
 
-
+            */
         }
     }
 
