@@ -6,22 +6,86 @@ using System.ComponentModel.Design;
 
 namespace SnakeGame
 {
+
+    using System;
+
+    public class Solution
+    {
+        public long solution(long n)
+        {
+            long answer = 0;
+            char[] givenString = n.ToString().ToCharArray();
+            System.Array.Sort(givenString);
+            System.Array.Reverse(givenString);
+            answer = System.Convert.ToInt64(new String(givenString));
+            return answer;
+        }
+    }
     internal class Program
     {
 
-
-        
-        // 뱀은 매턴마다 자신의 앞으로 이동합니다.
-        // 사용자는 방향키를 이용하여 뱀의 이동 방향을 제어할 수 있습니다.
-        // 뱀은 맵에 무작위로 생성되는 음식을 먹을 수 있습니다.
-        // 뱀은 벽이나 자신의 몸에 부딪히면 게임이 끝나고 'Game Over' 메시지가 뜹니다.
-
-
-        // Main 함수에서 게임을 제어하는 코드를 작성합니다 : 뱀의 이동, 음식 먹기, 게임 오버 조건 확인 등을 주기적으로 수행합니다.
-        static void Main(string[] args)
+        public long solution(long n)
         {
-            long a = 13;
-            Console.WriteLine(a % 10);
+            long answer = 0;
+            string givenString = n.ToString();
+            string answerString = "";
+            string split1 = "";
+            string split2 = "";
+            for (int idx = 0; idx < givenString.Length; idx++)
+            {
+                split1 = "";
+                split2 = "";
+                if (idx == 0)
+                {
+                    answerString += givenString[idx];
+                }
+                else
+                {
+                    for (int strIdx = 0; strIdx < answerString.Length; strIdx++)
+                    {
+                        if (answerString[strIdx] > givenString[idx])
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < strIdx + 1; i++)
+                            {
+                                split1 += answerString[i];
+                            }
+                            for (int i = strIdx + 1; i < idx + 1; i++)
+                            {
+                                split2 += answerString[i];
+                            }
+                            answerString = split1;
+                            answerString += givenString[idx];
+                            answerString += split2;
+                            // answerString[:strIdx] + givenString[idx] + answerString[strIdx:]
+                        }
+                    }
+                }
+            }
+            answer = Convert.ToInt64(answerString);
+            return answer;
+        }
+
+
+    // 뱀은 매턴마다 자신의 앞으로 이동합니다.
+    // 사용자는 방향키를 이용하여 뱀의 이동 방향을 제어할 수 있습니다.
+    // 뱀은 맵에 무작위로 생성되는 음식을 먹을 수 있습니다.
+    // 뱀은 벽이나 자신의 몸에 부딪히면 게임이 끝나고 'Game Over' 메시지가 뜹니다.
+
+
+    // Main 함수에서 게임을 제어하는 코드를 작성합니다 : 뱀의 이동, 음식 먹기, 게임 오버 조건 확인 등을 주기적으로 수행합니다.
+    static void Main(string[] args)
+        {
+            int hashard;
+            int x = 15;
+            while (x > 10)
+            {
+                hashard += (x % 10);
+                x /= 10;
+            }
             /*
             // 초기 배열
             string[,] gameScreen = new string[40, 30];
