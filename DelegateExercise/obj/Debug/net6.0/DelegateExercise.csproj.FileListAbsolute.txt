@@ -1,0 +1,15 @@
+D:\Csharp\DelegateExercise\bin\Debug\net6.0\DelegateExercise.exe
+D:\Csharp\DelegateExercise\bin\Debug\net6.0\DelegateExercise.deps.json
+D:\Csharp\DelegateExercise\bin\Debug\net6.0\DelegateExercise.runtimeconfig.json
+D:\Csharp\DelegateExercise\bin\Debug\net6.0\DelegateExercise.dll
+D:\Csharp\DelegateExercise\bin\Debug\net6.0\DelegateExercise.pdb
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\DelegateExercise.csproj.AssemblyReference.cache
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\DelegateExercise.GeneratedMSBuildEditorConfig.editorconfig
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\DelegateExercise.AssemblyInfoInputs.cache
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\DelegateExercise.AssemblyInfo.cs
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\DelegateExercise.csproj.CoreCompileInputs.cache
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\DelegateExercise.dll
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\refint\DelegateExercise.dll
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\DelegateExercise.pdb
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\DelegateExercise.genruntimeconfig.cache
+D:\Csharp\DelegateExercise\obj\Debug\net6.0\ref\DelegateExercise.dll
